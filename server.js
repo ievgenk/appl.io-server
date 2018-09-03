@@ -5,8 +5,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
-const indexRouter = require("./routes");
 const usersRouter = require("./routes/users");
 const apiRouter = require("./routes/api");
 
@@ -40,7 +38,6 @@ app.use(cookieParser());
 
 //ROUTING
 
-app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
 

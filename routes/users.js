@@ -12,10 +12,23 @@ const UserModel = require("../models/userModel");
 
 router.post("/signup", (req, res) => {
   let validEmail = validator.isEmail(req.body.email);
+  let emptyPass = validator.isEmpty(req.body.password);
+  let passLongEnough = validator.isLength(req.body.password, {
+    min: 6,
+    max: 15
+  });
 
   if (!validEmail) {
     return res.status(500).json({
       message: "This is an Invalid Email"
+    });
+  } else if (emptyPass) {
+    return res.status(500).json({
+      message: "Password field is empty"
+    });
+  } else if (!passLongEnough) {
+    return res.status(500).json({
+      message: "Password needs to be between 6 and 15 characters"
     });
   }
 
@@ -29,7 +42,7 @@ router.post("/signup", (req, res) => {
           message: "This email already exists"
         });
       } else {
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
+        bcrypt.hash(req.body.password.trim(), 10, (err, hash) => {
           if (err) {
             return res.status(500).json({
               error: err

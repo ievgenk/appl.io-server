@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { PORT, MONGODB_URI, JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
 function checkAuth(req, res, next) {
   try {
