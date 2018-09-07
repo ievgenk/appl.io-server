@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const validator = require("validator");
@@ -8,7 +9,7 @@ const { PORT, JWT_SECRET, MONGODB_URI } = process.env;
 
 router.use(express.json());
 
-const UserModel = require("../models/userModel");
+const { User, Board } = require("../models/userModel");
 
 router.post("/signup", (req, res) => {
   let validEmail = validator.isEmail(req.body.email);
@@ -32,7 +33,7 @@ router.post("/signup", (req, res) => {
     });
   }
 
-  UserModel.findOne({
+  User.findOne({
     email: req.body.email
   })
     .exec()
@@ -48,17 +49,26 @@ router.post("/signup", (req, res) => {
               error: err
             });
           } else {
-            new UserModel({
+            new User({
               email: req.body.email,
               password: hash
             })
               .save()
               .then(newUser => {
-                res.status(201).json({
-                  message: "User Created"
+                return Board.insertMany([
+                  { title: "Applied", user: newUser._id },
+                  { title: "Phone Screen", user: newUser._id },
+                  { title: "Interview", user: newUser._id },
+                  { title: "Rejected", user: newUser._id },
+                  { title: "Accepted Offer", user: newUser._id }
+                ]).then(result => {
+                  return res.status(201).json({
+                    message: "User Created"
+                  });
                 });
               })
               .catch(error => {
+                console.log(error);
                 res.status(500).send(error);
               });
           }
@@ -68,20 +78,20 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  UserModel.findOne({
+  User.findOne({
     email: req.body.email
   })
     .exec()
     .then(user => {
       if (!user) {
         return res.status(401).json({
-          message: "Auth Failed"
+          message: "User was not found"
         });
       }
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (err) {
           return res.status(401).json({
-            message: "Auth Failed"
+            message: "Incorrect Password"
           });
         }
         if (result) {
@@ -101,7 +111,7 @@ router.post("/login", (req, res) => {
           });
         }
         return res.status(401).json({
-          message: "Auth Failed"
+          message: "Incorrect Password"
         });
       });
     })
