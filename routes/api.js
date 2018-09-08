@@ -28,17 +28,23 @@ router.post("/cards", checkAuth, (req, res) => {
   const card = new Card({
     companyName,
     postingURL,
-    board: boardId
+    boardId
   });
 
-  card
-    .save()
-    .then(() => {
-      res.status(200).send("Card saved successfully");
-    })
-    .catch(err => {
-      res.status(500).send("Could not save card");
-    });
+  card.save().then(card => {
+    console.log("Card", card);
+    return Board.findByIdAndUpdate(
+      card.boardId,
+      { $push: { cards: card._id } },
+      { new: true }
+    )
+      .then(() => {
+        res.status(200).send("Card saved successfully");
+      })
+      .catch(err => {
+        res.status(500).send("Could not save card");
+      });
+  });
 });
 
 module.exports = router;

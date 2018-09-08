@@ -9,7 +9,7 @@ const cardSchema = new Schema({
   postingURL: {
     type: String
   },
-  board: {
+  boardId: {
     type: mongoose.Schema.ObjectId,
     ref: "board",
     autopopulate: {
