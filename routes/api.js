@@ -23,12 +23,24 @@ router.get("/boards", checkAuth, (req, res) => {
 //Create Card
 
 router.post("/cards", checkAuth, (req, res) => {
-  const { companyName, postingURL, boardId } = req.body;
+  const {
+    companyName,
+    postingURL,
+    boardId,
+    contactName,
+    contactEmail,
+    contactPhone,
+    date
+  } = req.body;
 
   const card = new Card({
     companyName,
     postingURL,
-    boardId
+    boardId,
+    contactName,
+    contactEmail,
+    contactPhone,
+    date
   });
 
   card.save().then(card => {
@@ -47,4 +59,24 @@ router.post("/cards", checkAuth, (req, res) => {
   });
 });
 
+//Update Card
+
+router.put("/cards", checkAuth, (req, res) => {
+  console.log(req.body);
+
+  const { cardId, cardFieldName, cardFieldValue } = req.body;
+
+  let field = cardFieldName;
+  let val = cardFieldValue;
+
+  Card.findByIdAndUpdate(cardId, { field: val }, { new: true })
+    .exec()
+    .then(updatedCard => {
+      console.log(updatedCard);
+      res.status(200).send("Card updated successfully");
+    })
+    .catch(err => {
+      res.status(500).send("Could not update the card");
+    });
+});
 module.exports = router;

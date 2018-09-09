@@ -9,6 +9,18 @@ const cardSchema = new Schema({
   postingURL: {
     type: String
   },
+  contactName: {
+    type: String
+  },
+  contactEmail: {
+    type: String
+  },
+  contactPhone: {
+    type: String
+  },
+  date: {
+    type: String
+  },
   boardId: {
     type: mongoose.Schema.ObjectId,
     ref: "board",
