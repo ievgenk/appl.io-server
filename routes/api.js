@@ -112,4 +112,36 @@ router.put("/move/within", checkAuth, (req, res) => {
     });
 });
 
+//MOVING A CARD ACROSS THE BOARD
+
+router.put("/move/across", checkAuth, (req, res) => {
+  const { startBoard, finishBoard } = req.body;
+
+  Board.findByIdAndUpdate(
+    startBoard._id,
+    {
+      $set: { cards: startBoard.cardIds }
+    },
+    { new: true }
+  ).then(() => {
+    Board.findByIdAndUpdate(
+      finishBoard._id,
+      {
+        $set: { cards: finishBoard.cardIds }
+      },
+      { new: true }
+    )
+      .then(() => {
+        res
+          .status(200)
+          .send("Card was moved across to a different board successfully");
+      })
+      .catch(() => {
+        res
+          .status(500)
+          .send("Could not card move card across to a different board");
+      });
+  });
+});
+
 module.exports = router;
