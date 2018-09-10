@@ -53,7 +53,7 @@ router.post("/cards", checkAuth, (req, res) => {
       .then(() => {
         res.status(200).send("Card saved successfully");
       })
-      .catch(err => {
+      .catch(() => {
         res.status(500).send("Could not save card");
       });
   });
@@ -62,21 +62,33 @@ router.post("/cards", checkAuth, (req, res) => {
 //Update Card
 
 router.put("/cards", checkAuth, (req, res) => {
-  console.log(req.body);
-
   const { cardId, cardFieldName, cardFieldValue } = req.body;
 
-  let field = cardFieldName;
-  let val = cardFieldValue;
-
-  Card.findByIdAndUpdate(cardId, { field: val }, { new: true })
+  Card.findByIdAndUpdate(
+    cardId,
+    { $set: { [cardFieldName]: [cardFieldValue] } },
+    { new: true }
+  )
     .exec()
-    .then(updatedCard => {
-      console.log(updatedCard);
+    .then(() => {
       res.status(200).send("Card updated successfully");
     })
-    .catch(err => {
+    .catch(() => {
       res.status(500).send("Could not update the card");
+    });
+});
+
+// DELETING A CARD
+
+router.delete("/cards", checkAuth, (req, res) => {
+  const { _id } = req.body;
+
+  Card.findByIdAndRemove(_id)
+    .then(() => {
+      res.status(200).send("Card deleted successfully");
+    })
+    .catch(() => {
+      res.status(500).send("Could not delete the card");
     });
 });
 module.exports = router;
