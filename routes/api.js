@@ -91,4 +91,25 @@ router.delete("/cards", checkAuth, (req, res) => {
       res.status(500).send("Could not delete the card");
     });
 });
+
+//MOVING A CARD WITHIN BOARD
+
+router.put("/move/within", checkAuth, (req, res) => {
+  const { cardIds, boardId } = req.body;
+
+  Board.findByIdAndUpdate(
+    boardId,
+    {
+      $set: { cards: cardIds }
+    },
+    { new: true }
+  )
+    .then(() => {
+      res.status(200).send("Card was moved within board successfully");
+    })
+    .catch(() => {
+      res.status(500).send("Could not card move card within board");
+    });
+});
+
 module.exports = router;
