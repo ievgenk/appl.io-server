@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { PORT, JWT_SECRET, MONGODB_URI } = process.env;
+const { PORT, JWT_SECRET, MONGODB_URI } = require("../config");
 
 router.use(express.json());
 
