@@ -1,3 +1,7 @@
 language: node_js
 node_js: node
 services: mongodb
+deploy:
+  provider: heroku
+  api_key: c6611946-2377-40d4-ae36-439f4065ee4e
+  app: applio-server
