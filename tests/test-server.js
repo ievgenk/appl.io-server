@@ -1,3 +1,6 @@
+//mongodb://ekasian:gggggg1@ds035503.mlab.com:35503/applio-api-test
+const { MONGODB_URI } = require("../config");
+
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const mongoose = require("mongoose");
@@ -9,9 +12,7 @@ chai.use(chaiHttp);
 
 describe("USER AUTH TESTING", function() {
   before(async function() {
-    await mongoose.connect(
-      "mongodb://ekasian:gggggg1@ds035503.mlab.com:35503/applio-api-test"
-    );
+    await mongoose.connect(MONGODB_URI);
   });
 
   it("Should register a new user", async function() {

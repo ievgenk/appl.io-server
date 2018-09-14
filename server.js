@@ -12,7 +12,7 @@ const app = express();
 
 //ENV VARIABLES SETUPS
 require("dotenv").config();
-const { PORT, MONGODB_URI } = process.env;
+const { PORT, MONGODB_URI } = require("./config");
 
 //MONGO CONNECTION
 
