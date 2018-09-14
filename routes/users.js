@@ -8,7 +8,7 @@ require("dotenv").config();
 const { PORT, JWT_SECRET, MONGODB_URI } = require("../config");
 
 router.use(express.json());
-
+//Auth
 const { User, Board } = require("../models/userModel");
 
 router.post("/signup", (req, res) => {
