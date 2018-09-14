@@ -1,4 +1,3 @@
-//mongodb://ekasian:gggggg1@ds035503.mlab.com:35503/applio-api-test
 const { MONGODB_URI } = require("../config");
 
 const chai = require("chai");
