@@ -41,6 +41,12 @@ app.use(cookieParser());
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
 
+app.get("/", (req, res) => {
+  res.json({
+    test: "ok"
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 });
