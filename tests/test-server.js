@@ -14,18 +14,21 @@ describe("USER AUTH TESTING", function() {
     await mongoose.connect(MONGODB_URI);
   });
 
-  // it("Should register a new user", async function() {
-  //   let registeredUser = await chai
-  //     .request(app)
-  //     .post("/users/signup")
-  //     .send({
-  //       email: "test@testing.ca",
-  //       password: "coolpass"
-  //     });
-
-  //   expect(registeredUser).to.have.status(201);
-  //   expect(registeredUser.body.message).to.equal("User Created");
-  // });
+  it("Should register a new user", async function() {
+    try {
+      let registeredUser = await chai
+        .request(app)
+        .post("/users/signup")
+        .send({
+          email: "test@testing.ca",
+          password: "coolpass"
+        });
+      expect(registeredUser).to.have.status(201);
+      expect(registeredUser.body.message).to.equal("User Created");
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   it("Should fail to register a new user", async function() {
     let registeredUser = await chai
@@ -39,18 +42,18 @@ describe("USER AUTH TESTING", function() {
     expect(registeredUser).to.have.status(500);
   });
 
-  // it("Should login registered user", async function() {
-  //   let loggedInUser = await chai
-  //     .request(app)
-  //     .post("/users/login")
-  //     .send({
-  //       email: "test@testing.ca",
-  //       password: "coolpass"
-  //     });
+  it("Should login registered user", async function() {
+    let loggedInUser = await chai
+      .request(app)
+      .post("/users/login")
+      .send({
+        email: "test@testing.ca",
+        password: "coolpass"
+      });
 
-  //   expect(loggedInUser.body).to.contain.keys(["token", "user"]);
-  //   expect(loggedInUser).to.have.status(200);
-  // });
+    expect(loggedInUser.body).to.contain.keys(["token", "user"]);
+    expect(loggedInUser).to.have.status(200);
+  });
 
   it("Should fail to login registered user", async function() {
     let loggedInUser = await chai
