@@ -2,5 +2,6 @@
   "env": {
     "MONGODB_URI": "mongodb://ekasian:gggggg1@ds233452.mlab.com:33452/appl-io",
     "JWT_SECRET": "wolf_howl"
-  }
+  },
+  "alias": "applio"
 }
