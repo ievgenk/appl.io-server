@@ -60,6 +60,7 @@ router.post("/signup", (req, res) => {
                   { title: "Phone Screen", user: newUser._id },
                   { title: "Interview", user: newUser._id },
                   { title: "Rejected", user: newUser._id },
+                  // Changed Offers
                   { title: "Offers", user: newUser._id }
                 ]).then(result => {
                   return res.status(201).json({
